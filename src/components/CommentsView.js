@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import CommentView from "./CommentView";
+import styled from "styled-components";
 
-export default function Comments({ showComments, postId }) {
+const StyledDiv = styled.div`
+  textalign: left;
+`;
+
+export default function CommentsView({ postId }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -13,21 +19,15 @@ export default function Comments({ showComments, postId }) {
   }, [postId]);
 
   return (
-    <div style={{ textAlign: "center" }}>
-      {comments.map((comment) => {
-        return (
-          <div key={comment.id}>
-            <h4>Name: {comment.name}</h4>
-            <h4>email: {comment.email}</h4>
-            <p>Comment: {comment.body}</p>
-          </div>
-        );
-      })}
-    </div>
+    <StyledDiv>
+      {comments.map((comment) => (
+        <CommentView key={comment.id} {...comment} />
+      ))}
+    </StyledDiv>
   );
 }
 
-Comments.propTypes = {
+CommentsView.propTypes = {
   showComments: PropTypes.bool,
   postId: PropTypes.number,
 };
