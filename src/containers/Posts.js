@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PostsView from "../components/PostsView";
 import SearchView from "../components/SearchView";
 
@@ -12,26 +12,23 @@ export default function Posts() {
       .then((data) => setPosts(data));
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  useEffect(() => {
     //debugger;
     if (!searchParam) {
       fetchPosts();
-    } else {
-      const filteredPosts = posts.filter(({ body }) =>
-        body.includes(searchParam)
-      );
-      setPosts(filteredPosts);
     }
   }, [searchParam]);
 
+  const filteredPosts = useMemo(() => {
+    if (!searchParam) {
+      return posts;
+    }
+    return posts.filter(({ body }) => body.includes(searchParam));
+  }, [searchParam, posts]);
+
   return (
     <>
-      {" "}
       <SearchView search={searchParam} setSearch={setSearchParam} />
-      <PostsView posts={posts} />
+      <PostsView posts={filteredPosts} />
     </>
   );
 }

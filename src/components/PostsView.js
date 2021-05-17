@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export default function PostsView({ posts }) {
   return (
-    <div style={{ padding: "16px" }}>
+    <div style={{ padding: 16 }}>
       {posts.map((post) => (
         <PostView key={post.id} {...post} />
       ))}
