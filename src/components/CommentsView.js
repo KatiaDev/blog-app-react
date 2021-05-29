@@ -1,19 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CommentView from "./CommentView";
 import styled from "styled-components";
-import { useComments } from "../contexts/CommentsContext";
 
 const StyledDiv = styled.div`
-  text-align: left;
+  textalign: left;
 `;
 
 export default function CommentsView({ postId }) {
-  const { comments, fetchComments } = useComments();
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetchComments(postId);
-  }, [postId, fetchComments]);
+    const fetchComments = () =>
+      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+        .then((response) => response.json())
+        .then((data) => setComments(data));
+    fetchComments();
+  }, [postId]);
 
   return (
     <StyledDiv>

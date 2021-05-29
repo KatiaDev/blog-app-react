@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import CommentsView from "./CommentsView";
 import styled from "styled-components";
-import { CommentsProvider } from "../contexts/CommentsContext";
 
 const StyledDiv = styled.div`
   width: 95%;
@@ -34,18 +33,18 @@ const StyledButton = styled.button`
 export default function PostView({ id, title, body, userId }) {
   const [showComments, setShowComments] = useState(false);
 
-  const handleClick = () => {
+  const onClick = () => {
     setShowComments(!showComments);
   };
 
   return (
-    <StyledDiv>
+    <StyledDiv style={{ textAlign: "left" }}>
       <StyledH4>{title}</StyledH4>
       <StyledText>{body}</StyledText>
-      <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
-      <CommentsProvider>
-        {showComments && <CommentsView postId={id} />}
-      </CommentsProvider>
+      <StyledButton onClick={onClick}>Toggle comments</StyledButton>
+      {showComments ? (
+        <CommentsView showComments={showComments} postId={id} />
+      ) : null}
     </StyledDiv>
   );
 }
