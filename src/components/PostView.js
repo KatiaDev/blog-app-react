@@ -38,13 +38,11 @@ export default function PostView({ id, title, body, userId }) {
   };
 
   return (
-    <StyledDiv style={{ textAlign: "left" }}>
+    <StyledDiv>
       <StyledH4>{title}</StyledH4>
       <StyledText>{body}</StyledText>
       <StyledButton onClick={onClick}>Toggle comments</StyledButton>
-      {showComments ? (
-        <CommentsView showComments={showComments} postId={id} />
-      ) : null}
+      {showComments ? <CommentsView postId={id} /> : null}
     </StyledDiv>
   );
 }

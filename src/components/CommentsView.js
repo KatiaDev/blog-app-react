@@ -4,7 +4,7 @@ import CommentView from "./CommentView";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  textalign: left;
+  text-align: left;
 `;
 
 export default function CommentsView({ postId }) {
