@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
 import PostsView from "../components/PostsView";
 import SearchView from "../components/SearchView";
-import { usePosts } from "../contexts/PostsContext";
 
-export default function Posts() {
-  const { filteredPosts, fetchPosts } = usePosts();
+import { setPosts, setLoadingFlag } from "../actions/posts";
+import { setError } from "../actions/error";
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
+let Posts = (props) => {
   return (
     <>
       <SearchView />
       <PostsView posts={filteredPosts} />
     </>
   );
-}
+};
 
 Posts.propTypes = {};
