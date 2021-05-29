@@ -25,3 +25,4 @@ export function CommentsProvider({ children }) {
     </CommentsContext.Provider>
   );
 }
+///redux was here
