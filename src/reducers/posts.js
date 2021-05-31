@@ -12,7 +12,7 @@ export function postsReducer(state = initialValues, action) {
     case CLEAR_POSTS:
       return { ...state, posts: [] };
     case SET_LOADING:
-      debugger;
+      //debugger;
       return { ...state, loading: action.payload };
     default:
       return state;

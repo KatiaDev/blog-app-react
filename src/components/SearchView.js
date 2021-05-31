@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, memo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { usePosts } from "../contexts/PostsContext";
 
 const InputGroup = styled.div`
   width: 75%;
@@ -22,9 +21,7 @@ const Input = styled.input`
   font-size: 16px;
 `;
 
-export default function SearchView() {
-  const { search, setSearch } = usePosts();
-
+export default function SearchView({ search, setSearch }) {
   const searchRef = useRef(null);
 
   useEffect(() => {
