@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import CommentsView from "./CommentsView";
 import styled from "styled-components";
+import { CommentsProvider } from "../contexts/CommentsContext";
+import CommentsView from "./CommentsView";
 
 const StyledDiv = styled.div`
   width: 95%;
@@ -30,7 +31,7 @@ const StyledButton = styled.button`
   font-size: 14px;
 `;
 
-const PostView = ({ id, title, body }) => {
+const PostView = ({ id, title, body, userId }) => {
   const [showComments, setShowComments] = useState(false);
 
   const handleClick = () => {
@@ -42,7 +43,9 @@ const PostView = ({ id, title, body }) => {
       <StyledH4>{title}</StyledH4>
       <StyledText>{body}</StyledText>
       <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
-      {showComments && <CommentsView postId={id} />}
+      <CommentsProvider>
+        {showComments && <CommentsView postId={id} />}
+      </CommentsProvider>
     </StyledDiv>
   );
 };

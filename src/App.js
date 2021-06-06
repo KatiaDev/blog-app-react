@@ -1,11 +1,10 @@
-import "./App.css";
-import Posts from "./containers/Posts";
+import Home from "./containers/Home";
 
 function App() {
   return (
-    <div className="App">
-      <Posts />
-    </div>
+    <>
+      <Home permissions={["ADMIN"]} />
+    </>
   );
 }
 
