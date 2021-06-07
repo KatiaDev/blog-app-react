@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { CommentsProvider } from "../contexts/CommentsContext";
+import { NavigationContext } from "../containers/Home";
+import { SINGLE_POST } from "../routes";
 import CommentsView from "./CommentsView";
 
 const StyledDiv = styled.div`
@@ -31,21 +33,50 @@ const StyledButton = styled.button`
   font-size: 14px;
 `;
 
-const PostView = ({ id, title, body, userId }) => {
+const PostView = ({ id, title, body, userId, newData = false }) => {
   const [showComments, setShowComments] = useState(false);
+  const [viewPost, setViewPost] = useState(null);
+  const { navigateTo } = useContext(NavigationContext);
+
+  const fetchSelectedPost = useCallback(() => {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then((response) => response.json())
+      .then((data) => setViewPost(data));
+  }, [id]);
 
   const handleClick = () => {
     setShowComments(!showComments);
   };
-
+  useEffect(() => {
+    if (newData && !viewPost) {
+      fetchSelectedPost();
+    }
+  }, [newData, viewPost, fetchSelectedPost]);
   return (
     <StyledDiv>
-      <StyledH4>{title}</StyledH4>
-      <StyledText>{body}</StyledText>
-      <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
-      <CommentsProvider>
-        {showComments && <CommentsView postId={id} />}
-      </CommentsProvider>
+      {!newData ? (
+        <>
+          <StyledButton
+            onClick={navigateTo({
+              path: SINGLE_POST,
+              args: { id, title, body },
+            })}
+          >
+            Show details
+          </StyledButton>
+          <StyledH4>{title}</StyledH4>
+          <StyledText>{body}</StyledText>
+        </>
+      ) : (
+        <>
+          <StyledH4>{viewPost?.title}</StyledH4>
+          <StyledText>{viewPost?.body}</StyledText>
+          <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
+          <CommentsProvider>
+            {showComments && <CommentsView postId={id} />}
+          </CommentsProvider>
+        </>
+      )}
     </StyledDiv>
   );
 };

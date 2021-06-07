@@ -11,7 +11,7 @@ export default function PostsView({ posts }) {
   return (
     <StyledDiv>
       {posts.map((post) => (
-        <PostView key={post.id} {...post} />
+        <PostView key={post.id} {...post} newData={false} />
       ))}
     </StyledDiv>
   );

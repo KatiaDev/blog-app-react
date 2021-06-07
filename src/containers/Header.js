@@ -1,4 +1,5 @@
 import React from "react";
+import appRoutes from "../routes";
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -36,9 +37,20 @@ export default function Header({ navigateTo, userPermissions }) {
       <StyledHeader>
         <Title>Blog</Title>
         <HeaderItemsWrapper>
-          <HeaderItem onClick={navigateTo("/users")}>Users</HeaderItem>
-          <HeaderItem onClick={navigateTo("/posts")}>Posts</HeaderItem>
-          <HeaderItem onClick={navigateTo("/albums")}>Albums</HeaderItem>
+          {appRoutes
+            .filter(({ menuLocation }) => menuLocation)
+            .filter(
+              ({ permissions }) =>
+                permissions.some((permission) =>
+                  userPermissions.includes(permission)
+                ) || permissions.length === 0
+            )
+
+            .map(({ path, title }) => (
+              <HeaderItem key={path} onClick={navigateTo({ path, args: null })}>
+                {title}
+              </HeaderItem>
+            ))}
         </HeaderItemsWrapper>
       </StyledHeader>
     </>
