@@ -1,24 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useAlbums } from "../contexts/AlbumsContext";
+import { useSearch } from "../contexts/SearchContext";
 
 export default function Albums() {
-  const [albums, setAlbums] = useState([]);
-
-  const fetchAlbums = () =>
-    fetch("https://jsonplaceholder.typicode.com/albums")
-      .then((response) => response.json())
-      .then((data) => setAlbums(data));
+  const { albums, fetchAlbums } = useAlbums();
+  const { filtered } = useSearch();
 
   useEffect(() => {
     fetchAlbums();
-  }, []);
+  }, [fetchAlbums]);
 
-  return (
-    <div>
-      {albums.map(({ id, title, userId }) => (
-        <div key={id}>
-          <p>{`Title: ${title}`}</p>
+  const albumsList = () => {
+    if (filtered) {
+      return (
+        <div>
+          {filtered.map(({ id, title, userId }) => (
+            <div key={id}>
+              <p>{`Title: ${title}`}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      );
+    }
+
+    return (
+      <div>
+        {albums.map(({ id, title, userId }) => (
+          <div key={id}>
+            <p>{`Title: ${title}`}</p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  return <>{albumsList}</>;
 }

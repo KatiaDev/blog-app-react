@@ -1,5 +1,8 @@
 import React from "react";
 import appRoutes from "../routes";
+import { useNavigation } from "./Home";
+import SearchView from "../components/SearchView";
+
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -31,7 +34,8 @@ const HeaderItem = styled.button`
   margin-left: 5px;
 `;
 
-export default function Header({ navigateTo, userPermissions }) {
+export default function Header() {
+  const { userPermissions, navigateTo } = useNavigation();
   return (
     <>
       <StyledHeader>
@@ -47,11 +51,15 @@ export default function Header({ navigateTo, userPermissions }) {
             )
 
             .map(({ path, title }) => (
-              <HeaderItem key={path} onClick={navigateTo({ path, args: null })}>
+              <HeaderItem
+                key={path}
+                onClick={navigateTo({ path, params: null })}
+              >
                 {title}
               </HeaderItem>
             ))}
         </HeaderItemsWrapper>
+        <SearchView />
       </StyledHeader>
     </>
   );

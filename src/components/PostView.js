@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { CommentsProvider } from "../contexts/CommentsContext";
-import { NavigationContext } from "../containers/Home";
+import { useNavigation } from "../containers/Home";
 import { SINGLE_POST } from "../routes";
 import CommentsView from "./CommentsView";
 
@@ -33,44 +33,52 @@ const StyledButton = styled.button`
   font-size: 14px;
 `;
 
-const PostView = ({ id, title, body, userId, newData = false }) => {
+const PostView = ({ id, title, body, userId, newData }) => {
   const [showComments, setShowComments] = useState(false);
-  const [viewPost, setViewPost] = useState(null);
-  const { navigateTo } = useContext(NavigationContext);
+  const [newPost, setnewPost] = useState(null);
+  const { navigateTo, userPermissions } = useNavigation();
 
-  const fetchSelectedPost = useCallback(() => {
+  const fetchNewPost = useCallback(() => {
     fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then((response) => response.json())
-      .then((data) => setViewPost(data));
+      .then((data) => setnewPost(data));
   }, [id]);
 
   const handleClick = () => {
     setShowComments(!showComments);
   };
   useEffect(() => {
-    if (newData && !viewPost) {
-      fetchSelectedPost();
+    if (newData && !newPost) {
+      fetchNewPost();
     }
-  }, [newData, viewPost, fetchSelectedPost]);
+  }, [newData, newPost, fetchNewPost]);
+
+  const restrict = userPermissions.find(
+    (permission) => permission === "READ_POST"
+  );
+
   return (
     <StyledDiv>
       {!newData ? (
         <>
-          <StyledButton
-            onClick={navigateTo({
-              path: SINGLE_POST,
-              args: { id, title, body },
-            })}
-          >
-            Show details
-          </StyledButton>
           <StyledH4>{title}</StyledH4>
           <StyledText>{body}</StyledText>
+
+          {restrict && (
+            <StyledButton
+              onClick={navigateTo({
+                path: SINGLE_POST,
+                params: { id, title, body },
+              })}
+            >
+              Show details
+            </StyledButton>
+          )}
         </>
       ) : (
         <>
-          <StyledH4>{viewPost?.title}</StyledH4>
-          <StyledText>{viewPost?.body}</StyledText>
+          <StyledH4>{newPost?.title}</StyledH4>
+          <StyledText>{newPost?.body}</StyledText>
           <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
           <CommentsProvider>
             {showComments && <CommentsView postId={id} />}

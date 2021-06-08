@@ -1,31 +1,26 @@
 import React, { useCallback, useEffect, useRef, memo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { usePosts } from "../contexts/PostsContext";
+import { useSearch } from "../contexts/SearchContext";
 
 const InputGroup = styled.div`
-  width: 75%;
-  margin: 10px auto;
+  width: 50%;
   display: flex;
   justify-content: center;
 `;
 
 const InputLabel = styled.label`
   padding: 7px;
-  font-size: 20px;
   font-weight: bold;
   color: white;
 `;
 
 const Input = styled.input`
-  padding: 8px 16px;
   border-radius: 5px;
-  font-size: 16px;
 `;
 
 export default function SearchView() {
-  const { search, setSearch } = usePosts();
-
+  const { search, setSearch } = useSearch();
   const searchRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +31,7 @@ export default function SearchView() {
 
   return (
     <InputGroup>
-      <InputLabel htmlFor="searchInput">Search post</InputLabel>
+      <InputLabel htmlFor="searchInput">Search</InputLabel>
       <Input
         ref={searchRef}
         id="searchInput"
@@ -55,9 +50,7 @@ SearchView.propTypes = {
 };
 
 const Button = styled.button`
-  padding: 8px 16px;
   border-radius: 5px;
-  font-size: 16px;
   font-weight: bold;
   color: gray;
 `;

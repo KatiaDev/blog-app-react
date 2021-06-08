@@ -1,28 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { usePosts } from "../contexts/PostsContext";
+import { useSearch } from "../contexts/SearchContext";
 
 export default function Users() {
-  const [usersList, setUsersList] = useState([]);
-
-  const fetchUsersList = () =>
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((data) => setUsersList(data));
+  const { users, fetchUsers } = usePosts();
+  const { filtered } = useSearch();
 
   useEffect(() => {
-    fetchUsersList();
-  }, []);
+    fetchUsers();
+  }, [fetchUsers]);
 
-  return (
-    <div style={{ textAlign: "left", padding: 50 }}>
-      {usersList.map(({ id, name, username, email, phone, website }) => (
-        <div key={id} style={{ margin: 10, padding: 5 }}>
-          <p>{`Name:${name}`}</p>
-          <p>{`Username:${username}`}</p>
-          <p>{`email:${email}`}</p>
-          <p>{`phone:${phone}`}</p>
-          <p>{`website:${website}`}</p>
+  const usersList = () => {
+    if (filtered) {
+      return (
+        <div style={{ textAlign: "left", padding: 50 }}>
+          {filtered.map(({ id, name, username, email, phone, website }) => (
+            <div key={id} style={{ margin: 10, padding: 5 }}>
+              <p>{`Name: ${name}`}</p>
+              <p>{`Username: ${username}`}</p>
+              <p>{`email: ${email}`}</p>
+              <p>{`phone: ${phone}`}</p>
+              <p>{`website: ${website}`}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      );
+    }
+    return (
+      <div style={{ textAlign: "left", padding: 50 }}>
+        {users.map(({ id, name, username, email, phone, website }) => (
+          <div key={id} style={{ margin: 10, padding: 5 }}>
+            <p>{`Name: ${name}`}</p>
+            <p>{`Username: ${username}`}</p>
+            <p>{`email: ${email}`}</p>
+            <p>{`phone: ${phone}`}</p>
+            <p>{`website: ${website}`}</p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  return <>{usersList}</>;
 }

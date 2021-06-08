@@ -2,7 +2,6 @@ import PostView from "./components/PostView";
 import Albums from "./containers/Albums";
 import Posts from "./containers/Posts";
 import Users from "./containers/Users";
-import { PostsProvider } from "./contexts/PostsContext";
 
 export const SINGLE_POST = "/posts/:id";
 
@@ -18,12 +17,8 @@ const appRoutes = [
     path: "/posts",
     title: "Posts",
     menuLocation: true,
-    permissions: ["READ_POST", "ADMIN"],
-    render: (props) => (
-      <PostsProvider>
-        <Posts {...props} />
-      </PostsProvider>
-    ),
+    permissions: ["READ_POSTS", "ADMIN"],
+    render: (props) => <Posts {...props} />,
   },
 
   {
@@ -37,7 +32,7 @@ const appRoutes = [
     path: SINGLE_POST,
     title: "Post",
     menuLocation: false,
-    permissions: ["READ_POST", "ADMIN"],
+    permissions: ["READ_POST"],
     render: (props) => <PostView {...props} newData />,
   },
   {

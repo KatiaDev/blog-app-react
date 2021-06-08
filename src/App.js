@@ -3,7 +3,7 @@ import Home from "./containers/Home";
 function App() {
   return (
     <>
-      <Home permissions={["ADMIN"]} />
+      <Home />
     </>
   );
 }
