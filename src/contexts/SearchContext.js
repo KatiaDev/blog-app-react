@@ -12,7 +12,6 @@ export function useSearch() {
 
 export function SearchProvider({ children }) {
   const [search, setSearch] = useState("");
-  const [filtered, setFiltered] = useState([]);
 
   const { path } = useNavigation();
 
@@ -20,35 +19,38 @@ export function SearchProvider({ children }) {
   const { users } = useUsers();
   const { albums } = useAlbums();
 
-  const filteredPosts = useMemo(() => {
-    if (search) return posts.filter(({ body }) => body.includes(search));
-  }, [search, posts]);
+  const filteredData = useMemo(() => {
+    switch (path) {
+      case "/posts":
+        if (!search) {
+          return posts;
+        } else {
+          return posts.filter(({ body }) => body.includes(search));
+        }
 
-  const filteredUsers = useMemo(() => {
-    if (search)
-      return users.filter(({ username }) => username.includes(search));
-  }, [search, users]);
+      case "/users":
+        if (!search) {
+          return users;
+        } else {
+          return users.filter(({ username }) => username.includes(search));
+        }
 
-  const filteredAlbums = useMemo(() => {
-    if (search) return albums.filter(({ title }) => title.includes(search));
-  }, [search, albums]);
+      case "/albums":
+        if (!search) {
+          return albums;
+        } else {
+          return albums.filter(({ title }) => title.includes(search));
+        }
 
-  switch (path) {
-    case "/posts":
-      return setFiltered(filteredPosts);
-    case "/users":
-      return setFiltered(filteredUsers);
-    case "/albums":
-      return setFiltered(filteredAlbums);
-
-    default:
-      setFiltered([]);
-  }
+      default:
+        return path;
+    }
+  }, [albums, path, posts, search, users]);
 
   const value = {
     search,
     setSearch,
-    filtered,
+    filteredData,
   };
 
   return (

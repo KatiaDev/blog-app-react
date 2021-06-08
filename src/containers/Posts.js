@@ -4,21 +4,12 @@ import { usePosts } from "../contexts/PostsContext";
 import { useSearch } from "../contexts/SearchContext";
 
 export default function Posts() {
-  const { posts, fetchPosts } = usePosts();
-  const { filtered } = useSearch();
+  const { fetchPosts } = usePosts();
+  const { filteredData } = useSearch();
 
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
 
-  const postsList = () => {
-    if (filtered) {
-      return <PostsView posts={filtered} />;
-    }
-    return <PostsView posts={posts} />;
-  };
-
-  return <>{postsList}</>;
+  return <PostsView posts={filteredData} />;
 }
-
-Posts.propTypes = {};
