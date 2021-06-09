@@ -24,26 +24,23 @@ export function SearchProvider({ children }) {
       case "/posts":
         if (!search) {
           return posts;
-        } else {
-          return posts.filter(({ body }) => body.includes(search));
         }
+        return posts.filter(({ body }) => body.includes(search));
 
       case "/users":
         if (!search) {
           return users;
-        } else {
-          return users.filter(({ username }) => username.includes(search));
         }
+        return users.filter(({ username }) => username.includes(search));
 
       case "/albums":
         if (!search) {
           return albums;
-        } else {
-          return albums.filter(({ title }) => title.includes(search));
         }
+        return albums.filter(({ title }) => title.includes(search));
 
       default:
-        return path;
+        return [];
     }
   }, [albums, path, posts, search, users]);
 
