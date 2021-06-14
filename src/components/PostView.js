@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import { useParams, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import { CommentsProvider } from "../contexts/CommentsContext";
 import { useNavigation } from "../containers/Home";
-import { SINGLE_POST } from "../routes";
 import CommentsView from "./CommentsView";
+
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 const StyledDiv = styled.div`
   width: 95%;
@@ -35,23 +37,27 @@ const StyledButton = styled.button`
 
 const PostView = ({ id, title, body, userId, newData }) => {
   const [showComments, setShowComments] = useState(false);
-  const [newPost, setnewPost] = useState(null);
-  const { navigateTo, userPermissions } = useNavigation();
+  const [newPost, setNewPost] = useState(null);
+  const { userPermissions } = useNavigation();
+
+  let location = useLocation();
+  let params = useParams();
+  const { state } = location;
 
   const fetchNewPost = useCallback(() => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    fetch(`https://jsonplaceholder.typicode.com/posts/${params?.idPost}`)
       .then((response) => response.json())
-      .then((data) => setnewPost(data));
-  }, [id]);
+      .then((data) => setNewPost(data));
+  }, [params?.idPost]);
 
   const handleClick = () => {
     setShowComments(!showComments);
   };
   useEffect(() => {
-    if (newData && !newPost) {
+    if (params?.idPost) {
       fetchNewPost();
     }
-  }, [newData, newPost, fetchNewPost]);
+  }, [params?.idPost, fetchNewPost]);
 
   const restrict = userPermissions.find(
     (permission) => permission === "READ_POST"
@@ -65,23 +71,19 @@ const PostView = ({ id, title, body, userId, newData }) => {
           <StyledText>{body}</StyledText>
 
           {restrict && (
-            <StyledButton
-              onClick={navigateTo({
-                path: SINGLE_POST,
-                params: { id, title, body },
-              })}
-            >
-              Show details
-            </StyledButton>
+            <Link to={{ pathname: `/posts/${id}`, state: { title, body, id } }}>
+              {/* Link to Location ??? */}
+              <StyledButton>Show details</StyledButton>
+            </Link>
           )}
         </>
       ) : (
         <>
-          <StyledH4>{newPost?.title}</StyledH4>
-          <StyledText>{newPost?.body}</StyledText>
+          <StyledH4>{state?.title || newPost?.title}</StyledH4>
+          <StyledText>{state?.body || newPost?.body}</StyledText>
           <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
           <CommentsProvider>
-            {showComments && <CommentsView postId={id} />}
+            {showComments && <CommentsView postId={newPost.id || state.id} />}
           </CommentsProvider>
         </>
       )}

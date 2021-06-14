@@ -3,20 +3,28 @@ import Albums from "./containers/Albums";
 import Posts from "./containers/Posts";
 import Users from "./containers/Users";
 
-export const SINGLE_POST = "/posts/:id";
-
 const appRoutes = [
+  {
+    path: "/",
+    title: "Home",
+    menuLocation: true,
+    exact: true,
+    permissions: [],
+    render: () => "Welcome!!",
+  },
   {
     path: "/users",
     title: "Users",
     menuLocation: true,
+    exact: true,
     permissions: ["ADMIN"],
-    render: () => <Users />,
+    render: (props) => <Users {...props} />,
   },
   {
     path: "/posts",
     title: "Posts",
     menuLocation: true,
+    exact: true,
     permissions: ["READ_POSTS", "ADMIN"],
     render: (props) => <Posts {...props} />,
   },
@@ -25,22 +33,17 @@ const appRoutes = [
     path: "/albums",
     title: "Albums",
     menuLocation: true,
+    exact: true,
     permissions: ["READ_ALBUM", "ADMIN"],
-    render: () => <Albums />,
+    render: (props) => <Albums {...props} />,
   },
   {
-    path: SINGLE_POST,
+    path: "/posts/:idPost",
     title: "Post",
     menuLocation: false,
+    exact: true,
     permissions: ["READ_POST"],
     render: (props) => <PostView {...props} newData />,
-  },
-  {
-    path: "",
-    title: "Dashboard",
-    menuLocation: true,
-    permissions: [],
-    render: () => "Dashboard",
   },
 ];
 

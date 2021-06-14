@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import appRoutes from "../routes";
 import { useNavigation } from "./Home";
 import SearchView from "../components/SearchView";
@@ -35,7 +36,7 @@ const HeaderItem = styled.button`
 `;
 
 export default function Header() {
-  const { userPermissions, navigateTo } = useNavigation();
+  const { userPermissions } = useNavigation();
   return (
     <>
       <StyledHeader>
@@ -51,12 +52,9 @@ export default function Header() {
             )
 
             .map(({ path, title }) => (
-              <HeaderItem
-                key={path}
-                onClick={navigateTo({ path, params: null })}
-              >
-                {title}
-              </HeaderItem>
+              <NavLink to={path} key={path}>
+                <HeaderItem>{title}</HeaderItem>
+              </NavLink>
             ))}
         </HeaderItemsWrapper>
         <SearchView />

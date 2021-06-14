@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
-import { useNavigation } from "../containers/Home";
+import { useLocation } from "react-router";
 import { useAlbums } from "./AlbumsContext";
 import { usePosts } from "./PostsContext";
 import { useUsers } from "./UsersContext";
@@ -12,15 +12,15 @@ export function useSearch() {
 
 export function SearchProvider({ children }) {
   const [search, setSearch] = useState("");
-
-  const { path } = useNavigation();
-
   const { posts } = usePosts();
   const { users } = useUsers();
   const { albums } = useAlbums();
 
+  let location = useLocation();
+  let pathname = location.pathname;
+
   const filteredData = useMemo(() => {
-    switch (path) {
+    switch (pathname) {
       case "/posts":
         if (!search) {
           return posts;
@@ -42,7 +42,7 @@ export function SearchProvider({ children }) {
       default:
         return [];
     }
-  }, [albums, path, posts, search, users]);
+  }, [albums, pathname, posts, search, users]);
 
   const value = {
     search,
