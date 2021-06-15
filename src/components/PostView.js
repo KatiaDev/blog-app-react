@@ -72,7 +72,6 @@ const PostView = ({ id, title, body, userId, newData }) => {
 
           {restrict && (
             <Link to={{ pathname: `/posts/${id}`, state: { title, body, id } }}>
-              {/* Link to Location ??? */}
               <StyledButton>Show details</StyledButton>
             </Link>
           )}

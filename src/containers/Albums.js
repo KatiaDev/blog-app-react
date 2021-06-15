@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useAlbums } from "../contexts/AlbumsContext";
 import { useSearch } from "../contexts/SearchContext";
+import AlbumView from "../components/AlbumView";
 
 export default function Albums() {
   const { fetchAlbums } = useAlbums();
@@ -13,9 +14,13 @@ export default function Albums() {
   return (
     <div>
       {filteredData.map(({ id, title, userId }) => (
-        <div key={id}>
-          <p>{`Title: ${title}`}</p>
-        </div>
+        <AlbumView
+          key={id}
+          id={id}
+          title={title}
+          userId={userId}
+          newData={false}
+        />
       ))}
     </div>
   );

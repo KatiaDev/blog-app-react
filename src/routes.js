@@ -1,4 +1,6 @@
 import PostView from "./components/PostView";
+import AlbumView from "./components/AlbumView";
+import UserView from "./components/UserView";
 import Albums from "./containers/Albums";
 import Posts from "./containers/Posts";
 import Users from "./containers/Users";
@@ -42,8 +44,25 @@ const appRoutes = [
     title: "Post",
     menuLocation: false,
     exact: true,
-    permissions: ["READ_POST"],
+    permissions: ["READ_POST", "ADMIN"],
     render: (props) => <PostView {...props} newData />,
+  },
+
+  {
+    path: "/albums/:idAlbum",
+    title: "Album",
+    menuLocation: false,
+    exact: true,
+    permissions: ["READ_ALBUM", "ADMIN"],
+    render: (props) => <AlbumView {...props} newData />,
+  },
+  {
+    path: "/users/:idUser",
+    title: "User",
+    menuLocation: false,
+    exact: true,
+    permissions: ["ADMIN"],
+    render: (props) => <UserView {...props} />,
   },
 ];
 
