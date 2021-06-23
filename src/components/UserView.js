@@ -27,13 +27,17 @@ export default function UserView({ userId }) {
 
   return (
     <>
-      <div style={{ margin: 10, padding: 5 }}>
-        <p>{`Name: ${user.name}`}</p>
-        <p>{`Username: ${user.username}`}</p>
-        <p>{`email: ${user.email}`}</p>
-        <p>{`phone: ${user.phone}`}</p>
-        <p>{`website: ${user.website}`}</p>
-      </div>
+      {user ? (
+        <div style={{ margin: 10, padding: 5 }}>
+          <p>{`Name: ${user.name}`}</p>
+          <p>{`Username: ${user.username}`}</p>
+          <p>{`email: ${user.email}`}</p>
+          <p>{`phone: ${user.phone}`}</p>
+          <p>{`website: ${user.website}`}</p>
+        </div>
+      ) : (
+        <div style={{ margin: 10 }}>User not found.</div>
+      )}
     </>
   );
 }

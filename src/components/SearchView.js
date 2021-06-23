@@ -1,25 +1,24 @@
 import React, { useCallback, useEffect, useRef, memo } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import { useSearch } from "../contexts/SearchContext";
+import { makeStyles } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 
-const InputGroup = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: center;
-`;
-
-const InputLabel = styled.label`
-  padding: 7px;
-  font-weight: bold;
-  color: white;
-`;
-
-const Input = styled.input`
-  border-radius: 5px;
-`;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  buttonFontSize: {
+    fontSize: "11px",
+    color: "#a1a1a1",
+  },
+  inputFontSize: {
+    fontSize: "8px",
+  },
+}));
 
 export default function SearchView() {
+  const classes = useStyles();
   const { search, setSearch } = useSearch();
   const searchRef = useRef(null);
 
@@ -30,17 +29,19 @@ export default function SearchView() {
   const handleClick = useCallback(() => setSearch(""), [setSearch]);
 
   return (
-    <InputGroup>
-      <InputLabel htmlFor="searchInput">Search</InputLabel>
-      <Input
+    <div className={classes.root}>
+      <TextField
         ref={searchRef}
-        id="searchInput"
-        type="text"
+        id="outlined-helperText"
+        label="Search"
+        variant="outlined"
+        size="small"
+        className={classes.inputFontSize}
         value={search}
         onChange={({ target: { value } }) => setSearch(value)}
       />
       <SearchButton onClick={handleClick} text="Clear" />
-    </InputGroup>
+    </div>
   );
 }
 
@@ -49,15 +50,18 @@ SearchView.propTypes = {
   setSearch: PropTypes.func,
 };
 
-const Button = styled.button`
-  border-radius: 5px;
-  font-weight: bold;
-  color: gray;
-`;
-
-function SearchButton({ onClick, text, type = "button" }) {
+function SearchButton({ onClick, text }) {
+  const classes = useStyles();
   //console.log("render searchButton");
-  return <Button onClick={onClick}>{text}</Button>;
+  return (
+    <Button
+      className={classes.buttonFontSize}
+      variant="contained"
+      onClick={onClick}
+    >
+      {text}
+    </Button>
+  );
 }
 
 SearchButton.propTypes = {

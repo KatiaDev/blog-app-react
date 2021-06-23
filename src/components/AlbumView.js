@@ -42,7 +42,7 @@ export default function AlbumView({ id, title, userId, newData }) {
           <Link
             to={{
               pathname: `/users/${state?.userId || newAlbum?.userId}`,
-              state: { userId },
+              state: { userId: state?.userId || newAlbum?.userId },
             }}
           >
             <p>User: {state?.userId || newAlbum?.userId}</p>

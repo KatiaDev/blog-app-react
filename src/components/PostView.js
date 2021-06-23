@@ -82,7 +82,7 @@ const PostView = ({ id, title, body, userId, newData }) => {
           <StyledText>{state?.body || newPost?.body}</StyledText>
           <StyledButton onClick={handleClick}>Toggle comments</StyledButton>
           <CommentsProvider>
-            {showComments && <CommentsView postId={newPost.id || state.id} />}
+            {showComments && <CommentsView postId={newPost?.id || state?.id} />}
           </CommentsProvider>
         </>
       )}

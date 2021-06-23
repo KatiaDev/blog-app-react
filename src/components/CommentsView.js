@@ -12,6 +12,7 @@ const StyledDiv = styled.div`
 
 export default function CommentsView({ postId }) {
   const { comments, fetchComments } = useComments();
+
   useEffect(() => {
     fetchComments(postId);
   }, [postId, fetchComments]);
