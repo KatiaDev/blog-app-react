@@ -1,14 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-
 import CommentView from "./CommentView";
+import { Container } from "@material-ui/core";
 import { useComments } from "../contexts/CommentsContext";
-
-import styled from "styled-components";
-
-const StyledDiv = styled.div`
-  text-align: left;
-`;
 
 export default function CommentsView({ postId }) {
   const { comments, fetchComments } = useComments();
@@ -18,11 +12,11 @@ export default function CommentsView({ postId }) {
   }, [postId, fetchComments]);
 
   return (
-    <StyledDiv>
+    <Container>
       {comments.map((comment) => (
         <CommentView key={comment.id} {...comment} />
       ))}
-    </StyledDiv>
+    </Container>
   );
 }
 

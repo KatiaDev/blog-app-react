@@ -1,41 +1,51 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import { makeStyles } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
-const StyledDiv = styled.div`
-  width: 75%;
-  margin: 10px 120px;
-  padding: 10px;
-  background: white;
-  border-radius: 10px;
-  @media (max-width: 700px) {
-    margin: 10px auto;
-  }
-`;
-
-const StyledH4 = styled.h4`
-  text-align: center;
-`;
-const StyledH5 = styled.h5`
-  color: blue;
-`;
-
-const StyledText = styled.p`
-  text-align: justify;
-`;
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "white",
+    margin: theme.spacing(5),
+    marginLeft: theme.spacing(20),
+    padding: theme.spacing(2),
+    width: "60%",
+    borderRadius: "10px",
+    /*[theme.breakpoints.up("md")]: {
+      marginLeft: theme.spacing(5),
+    },*/
+  },
+  commentTitle: {
+    textAlign: "center",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+    fontFamily: "Flamenco",
+  },
+  commentBody: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    textAlign: "justify",
+    fontFamily: "Flamenco",
+    fontWeight: "bold",
+  },
+  email: {
+    color: "blue",
+    fontSize: "0.9em",
+  },
+}));
 export default function CommentView({ id, name, email, body }) {
+  const classes = useStyles();
   return (
-    <StyledDiv>
-      <StyledH4>
+    <Box className={classes.root}>
+      <Typography className={classes.commentTitle}>
         <em>Name: </em> {name}
-      </StyledH4>
-      <StyledText>{body}</StyledText>
-      <StyledH5>
+      </Typography>
+      <Typography className={classes.commentBody}>{body}</Typography>
+      <Typography className={classes.email}>
         <em>email: </em>
         {email}
-      </StyledH5>
-    </StyledDiv>
+      </Typography>
+    </Box>
   );
 }
 

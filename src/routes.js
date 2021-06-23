@@ -12,7 +12,19 @@ const appRoutes = [
     menuLocation: true,
     exact: true,
     permissions: [],
-    render: () => "Welcome!!",
+    render: () => (
+      <div
+        style={{
+          color: "white",
+          fontSize: "40px",
+          textAlign: "center",
+          marginTop: "250px",
+        }}
+      >
+        {" "}
+        &#x1F389; &#x1F389; Welcome!! &#x1F389; &#x1F389;{" "}
+      </div>
+    ),
   },
   {
     path: "/users",
