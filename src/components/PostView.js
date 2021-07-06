@@ -107,7 +107,7 @@ const PostView = ({ id, title, body, userId, newData }) => {
             </Button>
             <CommentsProvider>
               {showComments && (
-                <CommentsView postId={newPost?.id || state?.id} />
+                <CommentsView postId={state?.id || newPost?.id} />
               )}
             </CommentsProvider>
           </Box>

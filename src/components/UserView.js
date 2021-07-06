@@ -1,15 +1,27 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+    width: 400,
+    maxHeight: "fit-content",
+    margin: theme.spacing(20),
+  },
+}));
 
 export default function UserView({ userId }) {
   const [user, setUser] = useState(null);
-
+  const classes = useStyles();
   const params = useParams();
-  console.log("params: ", params);
-  const location = useLocation();
-  console.log("location: ", location);
+  /* const location = useLocation();
   const { state } = location;
   console.log("state: ", state);
+  console.log("params: ", params);
+  console.log("location: ", location);
+  */
 
   const fetchUser = useCallback(() => {
     fetch(`https://jsonplaceholder.typicode.com/users/${params?.idUser}`)
@@ -26,18 +38,26 @@ export default function UserView({ userId }) {
   console.log("user: ", user);
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {user ? (
-        <div style={{ margin: 10, padding: 5 }}>
-          <p>{`Name: ${user.name}`}</p>
-          <p>{`Username: ${user.username}`}</p>
-          <p>{`email: ${user.email}`}</p>
-          <p>{`phone: ${user.phone}`}</p>
-          <p>{`website: ${user.website}`}</p>
-        </div>
+        <Card className={classes.root}>
+          <CardContent>
+            <Typography>Name: {user.name}</Typography>
+            <Typography>Username: {user.username}</Typography>
+            <Typography>email: {user.email}</Typography>
+            <Typography>phone: {user.phone}</Typography>
+            <Typography>website: {user.website}</Typography>
+          </CardContent>
+        </Card>
       ) : (
-        <div style={{ margin: 10 }}>User not found.</div>
+        <div style={{ margin: 10 }}>Loading...</div>
       )}
-    </>
+    </div>
   );
 }
