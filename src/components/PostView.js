@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { CommentsProvider } from "../contexts/CommentsContext";
-import { useNavigation } from "../containers/Home";
+//import { useNavigation } from "../containers/Home";
 import { makeStyles } from "@material-ui/core";
 import { Box, Button, Typography, Container } from "@material-ui/core";
 import CommentsView from "./CommentsView";
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const PostView = ({ id, title, body, userId, newData }) => {
   const [showComments, setShowComments] = useState(false);
   const [newPost, setNewPost] = useState(null);
-  const { userPermissions } = useNavigation();
+  //const { userPermissions } = useNavigation();
   const classes = useStyles();
   let location = useLocation();
   let params = useParams();
@@ -64,10 +64,10 @@ const PostView = ({ id, title, body, userId, newData }) => {
       fetchNewPost();
     }
   }, [params?.idPost, fetchNewPost]);
-
+  /*
   const restrict = userPermissions.find(
     (permission) => permission === "READ_POST"
-  );
+  );*/
 
   return (
     <>
@@ -76,16 +76,14 @@ const PostView = ({ id, title, body, userId, newData }) => {
           <Typography className={classes.postTitle}>{title}</Typography>
           <Typography className={classes.postContent}>{body}</Typography>
 
-          {restrict && (
-            <Link
-              to={{ pathname: `/posts/${id}`, state: { title, body, id } }}
-              style={{ textDecoration: "none" }}
-            >
-              <Button className={classes.showDetailsBtn} size="small">
-                Show details
-              </Button>
-            </Link>
-          )}
+          <Link
+            to={{ pathname: `/posts/${id}`, state: { title, body, id } }}
+            style={{ textDecoration: "none" }}
+          >
+            <Button className={classes.showDetailsBtn} size="small">
+              Show details
+            </Button>
+          </Link>
         </Box>
       ) : (
         <Container>
@@ -97,6 +95,7 @@ const PostView = ({ id, title, body, userId, newData }) => {
               {state?.body || newPost?.body}
             </Typography>
             <Button
+              data-testid="toggleButton-element"
               variant="contained"
               color="primary"
               size="small"
@@ -107,7 +106,10 @@ const PostView = ({ id, title, body, userId, newData }) => {
             </Button>
             <CommentsProvider>
               {showComments && (
-                <CommentsView postId={state?.id || newPost?.id} />
+                <CommentsView
+                  postId={state?.id || newPost?.id}
+                  data-testid="commentsList-element"
+                />
               )}
             </CommentsProvider>
           </Box>
